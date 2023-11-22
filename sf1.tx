@@ -1,0 +1,84 @@
+
+
+
+
+WAP to implement FPA method
+In a system, total no. for each type FP is given as:
+i/p-&gt;60, file-&gt;25, query-&gt;35, i/f-&gt;20, o/p-&gt;25.The types of FP are simple, avg., complex.
+The no. ratio for each FP is like: i/p=1:6:3, file=1:2:2, query= avg., i/f= complex, o/p=2:2:1.
+The wt. factors for FP are resp. 0.5, 1.0, 1.5 for simple, avg. and complex types.
+The reliability and complexity of the system are 65% and 0.75 resp. Compute FPA for the
+above system (UFP, TDI, VAF, AFP)...........................................................................................
+
+public class FunctionPointAnalysis {
+
+    public static void main(String[] args) {
+        // Given inputs
+        int inputCount = 60;
+        int fileCount = 25;
+        int queryCount = 35;
+        int interfaceCount = 20;
+        int outputCount = 25;
+
+        // Weight factors
+        double[] inputWeights = {0.5, 1.0, 1.5};
+        double[] outputWeights = {0.5, 1.0, 1.5};
+
+        // Ratios
+        int[] inputRatios = {1, 6, 3};
+        int[] fileRatios = {1, 2, 2};
+        // For queries and interfaces, as they are 'average' and 'complex' respectively, we'll handle them directly
+        // without using ratios
+
+        // Calculate UFP for input
+        double ufpInput = calculateUFP(inputCount, inputRatios, inputWeights);
+
+        // Calculate UFP for file
+        double ufpFile = calculateUFP(fileCount, fileRatios, outputWeights);
+
+        // UFP for query is already given
+        double ufpQuery = queryCount;
+
+        // UFP for interface is already given
+        double ufpInterface = interfaceCount * 1.5; // Complex interface weight is 1.5
+
+        // Calculate UFP for output
+        double ufpOutput = calculateUFP(outputCount, null, outputWeights);
+
+        // Calculate total UFP
+        double totalUFP = ufpInput + ufpFile + ufpQuery + ufpInterface + ufpOutput;
+
+        // Calculate TCF, ECF, and VAF
+        double tcf = 0.65 + (0.01 * 14 * 0.75); // Complexity is 0.75
+        double ecf = 1.4 + (-0.03 * 14 * 0.65); // Reliability is 0.65
+
+        double vaf = 0.65 + (0.01 * tcf) + (0.03 * ecf);
+
+        // Calculate AFP
+        double adjustedFP = totalUFP * vaf;
+
+        // Display results
+        System.out.println("UFP: " + totalUFP);
+        System.out.println("TCF: " + tcf);
+        System.out.println("ECF: " + ecf);
+        System.out.println("VAF: " + vaf);
+        System.out.println("AFP: " + adjustedFP);
+    }
+
+    // Function to calculate UFP for a particular function point type
+    public static double calculateUFP(int count, int[] ratios, double[] weights) {
+        double ufp = 0.0;
+
+        if (ratios != null) {
+            for (int i = 0; i < ratios.length; i++) {
+                ufp += count * ratios[i] * weights[i];
+            }
+        } else {
+            // For the case where ratios are not applicable (like queries, interfaces)
+            // directly use the count and weight
+            ufp = count * weights[0];
+        }
+
+        return ufp;
+    }
+}
