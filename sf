@@ -1,0 +1,116 @@
+Assignment 2....................
+Determination of HK Information Factor of a system having different
+modules with in-out information
+
+
+import java.util.ArrayList;
+import java.util.List;
+class Module {
+ int ini;
+ int outi;
+ int weight;
+ public Module(int ini, int outi, int weight) {
+ this.ini = ini;
+ this.outi = outi;
+ this.weight = weight;
+ }
+ public int calculateHKi() {
+ return weight * (int) Math.pow((outi * ini), 2);
+ }
+}
+public class HKInformationFactor {
+ public static void main(String[] args) {
+ 
+ List<Module> modules = new ArrayList<>();
+ modules.add(new Module(4, 3, 1));
+ modules.add(new Module(3, 3, 1));
+ int totalHK = 0;
+ for (Module module : modules) {
+ totalHK += module.calculateHKi();
+ }
+ System.out.println("Total HK Information Factor: " + totalHK);
+ }
+}
+ 
+............................................
+
+
+Assignment 3
+
+Apply the PERT-CPM method for a given problem(task-pair and 3 types of time 
+are given) –
+......................................................................
+import java.util.HashMap;
+import java.util.Map;
+class Task {
+ String name;
+ int optimisticTime;
+ int expectedTime;
+ int pessimisticTime;
+ public Task(String name, int optimisticTime, int expectedTime, int 
+pessimisticTime) {
+ this.name = name;
+ this.optimisticTime = optimisticTime;
+ this.expectedTime = expectedTime;
+ this.pessimisticTime = pessimisticTime;
+ }
+ public int calculatePERT() {
+ return (optimisticTime + 4 * expectedTime + pessimisticTime) / 6;
+ }
+}
+public class PERTCPM {
+ public static void main(String[] args) {
+ Map<String, Task> tasks = new HashMap<>();
+ // Add tasks with optimistic, expected, and pessimistic times
+ tasks.put("Task1", new Task("Task1", 2, 4, 6));
+ tasks.put("Task2", new Task("Task2", 3, 5, 7));
+ tasks.put("Task3", new Task("Task3", 1, 2, 3));
+ // Calculate PERT estimates for each task
+ for (Task task : tasks.values()) {
+ int pertEstimate = task.calculatePERT();
+ System.out.println("PERT estimate for " + task.name + ": " + 
+pertEstimate);
+ }
+ }
+}
+........................................
+
+
+
+assignment 5
+
+Write a program to implement Future/Present Value Analysis -
+
+import java.util.Scanner;
+public class FuturePresentValueAnalysis {
+public static void main(String[] args) {
+Scanner scanner = new Scanner(System.in);
+System.out.print("Enter present value: ");
+double presentValue = scanner.nextDouble();
+System.out.print("Enter interest rate (in percentage): ");
+double interestRate = scanner.nextDouble() / 100;
+System.out.print("Enter number of periods: ");
+int periods = scanner.nextInt();
+System.out.print("Enter 'F' for Future Value or 'P' for Present Value: ");
+char choice = scanner.next().charAt(0);
+if (choice == 'F' || choice == 'f') {
+double futureValue = calculateFutureValue(presentValue, interestRate, periods);
+System.out.println("Future Value: " + futureValue);
+} else if (choice == 'P' || choice == 'p') {
+double presentValueResult = calculatePresentValue(presentValue, interestRate,
+periods);
+System.out.println("Present Value: " + presentValueResult);
+} else {
+System.out.println("Invalid choice. Please enter 'F' or 'P'.");
+}
+}
+public static double calculateFutureValue(double presentValue, double
+interestRate, int periods) {
+return presentValue * Math.pow(1 + interestRate, periods);
+}
+public static double calculatePresentValue(double futureValue, double
+interestRate, int periods) {
+return futureValue / Math.pow(1 + interestRate, periods);
+}
+
+
